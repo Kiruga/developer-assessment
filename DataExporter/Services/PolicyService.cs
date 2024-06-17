@@ -36,6 +36,9 @@ namespace DataExporter.Services
             }
             catch (Exception ex)
             {
+                //Just an example of handling errors here, there are other options:
+                //- Another exception can be thrown
+                //- A new Result class can be created
                 return new ReadPolicyDto();
             }
 
@@ -99,6 +102,7 @@ namespace DataExporter.Services
         /// <param name="endDate"></param>
         /// <param name="startDate"></param>
         /// <returns>Returns a <ICollection<ExportDto>.</returns>
+        /// <remark>Can be moved to a separate Service</remark>
         public async Task<ICollection<ExportDto>> ExportPoliciesDataByDate(DateTime startDate, DateTime endDate)
         {
             var policies = _dbContext.Policies.Include(p => p.Notes)

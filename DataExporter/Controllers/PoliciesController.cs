@@ -32,6 +32,8 @@ namespace DataExporter.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPolicies()
         {
+            //Null or ZeroCount check can be added here if necessary
+
             return Ok(await _policyService.ReadPoliciesAsync());
         }
 
@@ -53,6 +55,8 @@ namespace DataExporter.Controllers
         public async Task<IActionResult> ExportData([FromQuery]DateTime startDate, [FromQuery] DateTime endDate)
         {
             var exportDtos = await _policyService.ExportPoliciesDataByDate(startDate, endDate);
+
+            //Null or ZeroCount check can be added here if necessary
 
             return Ok(exportDtos);
         }
