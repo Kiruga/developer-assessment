@@ -15,3 +15,40 @@ The **Data Exporter** app is a small RESTful API implemented in .NET 6. It manag
 - The tasks can be completed in any order.
 - Any third party library can be used to implement some of the functionality required.
 - To test the API, any tool like cURL or Postman can be used and the scripts should be included in the submission.
+
+
+## cURL commands
+
+Add new Policy:
+
+```
+
+curl --location 'https://localhost:7246/policies' \
+--header 'Content-Type: application/json' \
+--data '{"PolicyNumber":"TEST6", "Premium":"250", "StartDate":"2024-05-01T00:00:00"}'
+
+```
+
+Get all Policies:
+
+```
+
+curl --location 'https://localhost:7246/policies'
+
+```
+
+Get Policy with Id = 2
+
+```
+
+curl --location 'https://localhost:7246/policies/2'
+
+```
+
+Get Policies+Notes in a specified date range (01.04.2024 - 05.04.2024)
+
+```
+
+curl --location --request POST 'https://localhost:7246/policies/export?startDate=2024-04-01T00%3A00%3A00&endDate=2024-04-05T00%3A00%3A00'
+
+```
