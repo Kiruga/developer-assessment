@@ -33,7 +33,7 @@ namespace DataExporter.Services
             {
                 await _dbContext.Policies.AddAsync(policy);
                 await _dbContext.SaveChangesAsync();
-        }
+            }
             catch (Exception ex)
             {
                 return new ReadPolicyDto();
@@ -91,6 +91,33 @@ namespace DataExporter.Services
             };
 
             return policyDto;
+        }
+
+        /// <summary>
+        /// Creates a data to export.
+        /// </summary>
+        /// <param name="endDate"></param>
+        /// <param name="startDate"></param>
+        /// <returns>Returns a <ICollection<ExportDto>.</returns>
+        public async Task<ICollection<ExportDto>> ExportPoliciesDataByDate(DateTime startDate, DateTime endDate)
+        {
+            var policies = _dbContext.Policies.Include(p => p.Notes)
+                            .Where(p => p.StartDate >= startDate && p.StartDate <= endDate);
+
+            var exportDtos = new List<ExportDto>();
+
+            await policies.ForEachAsync(p =>
+            {
+                exportDtos.Add(new ExportDto()
+                {
+                    Notes = p.Notes.Select(n => n.Text).ToList(),
+                    PolicyNumber = p.PolicyNumber,
+                    Premium = p.Premium,
+                    StartDate = p.StartDate,
+                });
+            });
+
+            return exportDtos;
         }
     }
 }

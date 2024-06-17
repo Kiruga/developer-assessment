@@ -17,7 +17,7 @@ namespace DataExporter.Controllers
 
         [HttpPost]
         public async Task<IActionResult> PostPolicies([FromBody]CreatePolicyDto createPolicyDto)
-        {         
+        {
             var readPolicyDto = await _policyService.CreatePolicyAsync(createPolicyDto);
 
             if (readPolicyDto == null)
@@ -41,7 +41,7 @@ namespace DataExporter.Controllers
             var result = await _policyService.ReadPolicyAsync(policyId);
 
             if (result == null)
-        {
+            {
                 return NotFound("There is no policy with such ID.");
             }
 
@@ -52,7 +52,9 @@ namespace DataExporter.Controllers
         [HttpPost("export")]
         public async Task<IActionResult> ExportData([FromQuery]DateTime startDate, [FromQuery] DateTime endDate)
         {
-            return Ok();
+            var exportDtos = await _policyService.ExportPoliciesDataByDate(startDate, endDate);
+
+            return Ok(exportDtos);
         }
     }
 }
