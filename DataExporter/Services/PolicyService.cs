@@ -22,7 +22,32 @@ namespace DataExporter.Services
         /// <returns>Returns a ReadPolicyDto representing the new policy, if succeded. Returns null, otherwise.</returns>
         public async Task<ReadPolicyDto?> CreatePolicyAsync(CreatePolicyDto createPolicyDto)
         {
-            return await Task.FromResult(new ReadPolicyDto());
+            var policy = new Model.Policy
+            {
+                PolicyNumber = createPolicyDto.PolicyNumber,
+                Premium = createPolicyDto.Premium,
+                StartDate = createPolicyDto.StartDate
+            };
+
+            try
+            {
+                await _dbContext.Policies.AddAsync(policy);
+                await _dbContext.SaveChangesAsync();
+        }
+            catch (Exception ex)
+            {
+                return new ReadPolicyDto();
+            }
+
+            var policyReadDto = new ReadPolicyDto
+            {
+                Id = policy.Id,
+                PolicyNumber = policy.PolicyNumber,
+                Premium = policy.Premium,
+                StartDate = policy.StartDate
+            };
+
+            return await Task.FromResult(policyReadDto);
         }
 
         /// <summary>

@@ -18,7 +18,14 @@ namespace DataExporter.Controllers
         [HttpPost]
         public async Task<IActionResult> PostPolicies([FromBody]CreatePolicyDto createPolicyDto)
         {         
-            return Ok();
+            var readPolicyDto = await _policyService.CreatePolicyAsync(createPolicyDto);
+
+            if (readPolicyDto == null)
+            {
+                return StatusCode(500);
+            }
+
+            return Ok(readPolicyDto);
         }
 
 
