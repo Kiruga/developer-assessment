@@ -1,4 +1,5 @@
 ﻿using DataExporter.Dtos;
+using DataExporter.Model;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -41,7 +42,8 @@ namespace DataExporter.Services
         /// <returns>Returns a ReadPolicyDto.</returns>
         public async Task<ReadPolicyDto?> ReadPolicyAsync(int id)
         {
-            var policy = await _dbContext.Policies.SingleAsync(x => x.Id == id);
+            var policy = await _dbContext.Policies.SingleOrDefaultAsync(x => x.Id == id);
+
             if (policy == null)
             {
                 return null;
